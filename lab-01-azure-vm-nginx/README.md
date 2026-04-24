@@ -67,7 +67,7 @@ index.html
 
 ### NGINX Service Status
 
-![NGINX Status](screenshots/nginx-status.png)
+![NGINX Status](screenshots/status-nginx.png)
 
 ### Local Curl Test
 
