@@ -1,98 +1,57 @@
-# Lab 02 – AWS IAM Least Privilege Access to S3
+# Lab 05 - AWS IAM Least Privilege Access to S3
 
-## Objective
+## Overview
 
-The goal of this lab was to practice AWS IAM fundamentals by implementing a least-privilege access model for an Amazon S3 bucket.
+This lab demonstrates how to configure least-privilege access to an Amazon S3 bucket using AWS IAM.
 
-In this lab, I created an IAM user that can read files only from a specific S3 prefix named `reports/`. The user cannot read private files, upload objects, delete objects, or modify bucket permissions.
+The goal was to create an IAM user that can read files only from a specific S3 prefix named `reports/`, while being denied access to private files, uploads, and deletes.
 
-I also created an IAM role for EC2 and added a bucket policy that denies insecure non-HTTPS requests.
+This lab also includes an IAM role for EC2 and an S3 bucket policy that denies insecure non-HTTPS requests.
 
----
+## Architecture
 
-## AWS Services Used
+- Amazon S3 Bucket
+- IAM User
+- IAM Group
+- IAM Customer Managed Policy
+- IAM Role for EC2
+- S3 Bucket Policy
+- Block Public Access
+- Server-side encryption with SSE-S3
 
-- AWS IAM
-- Amazon S3
-- IAM Users
-- IAM Groups
-- IAM Policies
-- IAM Roles
-- S3 Bucket Policies
+## IAM Access Design
 
----
+| Component | Purpose |
+|---|---|
+| IAM User | Test user used to validate permissions |
+| IAM Group | Central place to manage auditor permissions |
+| IAM Policy | Allows read-only access to `reports/` |
+| IAM Role | Allows EC2 to access S3 without access keys |
+| Bucket Policy | Denies non-HTTPS requests to the bucket |
 
-## Architecture Overview
+## Steps Performed
 
-```text
-IAM User: lab2-auditor
-        |
-        v
-IAM Group: Lab2Auditors
-        |
-        v
-IAM Policy: S3 reports read-only access
-        |
-        v
-S3 Bucket
-├── reports/
-│   └── readme.txt      Allowed
-└── private/
-    └── secrets.txt     Denied
-```
+1. Created a private Amazon S3 bucket.
+2. Enabled Block Public Access.
+3. Disabled ACLs.
+4. Created two S3 prefixes: `reports/` and `private/`.
+5. Uploaded a test file to `reports/`.
+6. Uploaded a private test file to `private/`.
+7. Created a custom IAM policy with read-only access to `reports/`.
+8. Created an IAM group named `Lab5Auditors`.
+9. Attached the custom IAM policy to the IAM group.
+10. Created an IAM user named `lab5-auditor`.
+11. Added the IAM user to the `Lab5Auditors` group.
+12. Tested allowed and denied S3 actions using the auditor user.
+13. Created an IAM role for EC2.
+14. Reviewed the EC2 role trust policy.
+15. Added an S3 bucket policy to deny insecure HTTP requests.
 
-EC2 role concept:
+## IAM Policy Used
 
-```text
-EC2 Instance
-        |
-        v
-IAM Role: EC2 S3 read-only role
-        |
-        v
-IAM Policy: S3 reports read-only access
-```
+The custom IAM policy allowed the auditor user to list the bucket and read objects only inside the `reports/` prefix.
 
----
-
-## What I Built
-
-### 1. Private S3 Bucket
-
-I created a private Amazon S3 bucket with:
-
-- Block Public Access enabled
-- ACLs disabled
-- Server-side encryption enabled with SSE-S3
-- Two prefixes: `reports/` and `private/`
-
-Test objects:
-
-```text
-reports/readme.txt
-private/secrets.txt
-```
-
----
-
-### 2. Custom IAM Policy
-
-I created a custom IAM policy that allows the minimum permissions required for the auditor user.
-
-The policy allows:
-
-- Listing buckets in the S3 console
-- Listing the specific S3 bucket
-- Reading objects only inside `reports/`
-
-The policy does not allow:
-
-- Reading objects inside `private/`
-- Uploading objects
-- Deleting objects
-- Modifying bucket permissions
-
-Example policy with account-specific details redacted:
+Account-specific details were redacted.
 
 ```json
 {
@@ -111,62 +70,32 @@ Example policy with account-specific details redacted:
         "s3:GetBucketLocation",
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::lab5-iam-orlando-usw2-ACCOUNT-ID-us-west-2-an"
+      "Resource": "arn:aws:s3:::lab5-iam-orlando-usw2-REDACTED-us-west-2-an"
     },
     {
       "Sid": "AllowReadOnlyReportsFolder",
       "Effect": "Allow",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::lab5-iam-orlando-usw2-ACCOUNT-ID-us-west-2-an/reports/*"
+      "Resource": "arn:aws:s3:::lab5-iam-orlando-usw2-REDACTED-us-west-2-an/reports/*"
     }
   ]
 }
 ```
 
----
-
-### 3. IAM Group
-
-I created an IAM group for auditor-style access.
-
-```text
-Lab2Auditors
-```
-
-The custom S3 read-only policy was attached to this group.
-
-Using a group makes permission management cleaner because additional auditor users can receive the same access by being added to the group.
-
----
-
-### 4. IAM User
-
-I created an IAM user for testing.
-
-```text
-lab2-auditor
-```
-
-The user was added to the `Lab2Auditors` group and tested from the AWS Management Console.
-
----
-
 ## Permission Tests
 
-| Test | Expected Result | Actual Result |
-|---|---|---|
-| Open `reports/readme.txt` | Allowed | Passed |
-| Open `private/secrets.txt` | Access Denied | Passed |
-| Upload a new file | Access Denied | Passed |
-| Delete `reports/readme.txt` | Access Denied | Passed |
+| Test | Result |
+|---|---|
+| Open `reports/readme.txt` | Allowed |
+| Open `private/secrets.txt` | Access Denied |
+| Upload a new file | Access Denied |
+| Delete `reports/readme.txt` | Access Denied |
 
----
+## EC2 IAM Role
 
-## IAM Role for EC2
+An IAM role was created for EC2 to demonstrate how AWS services can access other AWS services without storing long-term access keys.
 
-I created an IAM role for EC2 so an EC2 instance could access S3 without storing long-term access keys on the server.
-
-The role trust policy allows EC2 to assume the role:
+The trust policy allows EC2 to assume the role.
 
 ```json
 {
@@ -183,20 +112,9 @@ The role trust policy allows EC2 to assume the role:
 }
 ```
 
-Key concept:
-
-```text
-Trust policy = who can assume the role
-Permissions policy = what the role can do
-```
-
-This avoids storing permanent IAM access keys inside an EC2 instance.
-
----
-
 ## S3 Bucket Policy
 
-I added a bucket policy to deny insecure HTTP requests and require secure transport.
+A bucket policy was added to deny requests that do not use HTTPS.
 
 ```json
 {
@@ -208,8 +126,8 @@ I added a bucket policy to deny insecure HTTP requests and require secure transp
       "Principal": "*",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::lab5-iam-orlando-usw2-ACCOUNT-ID-us-west-2-an",
-        "arn:aws:s3:::lab5-iam-orlando-usw2-ACCOUNT-ID-us-west-2-an/*"
+        "arn:aws:s3:::lab5-iam-orlando-usw2-REDACTED-us-west-2-an",
+        "arn:aws:s3:::lab5-iam-orlando-usw2-REDACTED-us-west-2-an/*"
       ],
       "Condition": {
         "Bool": {
@@ -221,97 +139,58 @@ I added a bucket policy to deny insecure HTTP requests and require secure transp
 }
 ```
 
-This is a resource-based policy because it is attached directly to the S3 bucket.
-
----
-
-## Key Concepts Learned
-
-### Least Privilege
-
-The IAM user received only the permissions needed to read files from `reports/`.
-
-The user could not upload, delete, or access private files.
-
-### Implicit Deny
-
-The user was denied access to `private/secrets.txt` because there was no explicit `Allow` for that object.
-
-In IAM, if an action is not explicitly allowed, it is denied by default.
-
-### Explicit Deny
-
-The bucket policy included an explicit deny for non-HTTPS requests.
-
-Explicit deny always overrides allow.
-
-```text
-Explicit Deny > Allow > Implicit Deny
-```
-
-### Identity-Based Policy vs Resource-Based Policy
-
-Identity-based policy:
-
-```text
-Policy attached to an IAM user, group, or role
-```
-
-Resource-based policy:
-
-```text
-Policy attached directly to an AWS resource
-```
-
-### IAM Role for AWS Services
-
-An IAM role allows AWS services like EC2 to receive temporary credentials.
-
-This is safer than storing long-term access keys inside servers or applications.
-
----
-
 ## Screenshots
 
-> Screenshots should not expose passwords, access keys, or full sensitive account information.
+### S3 Bucket Folders
 
-| Screenshot | Description |
-|---|---|
-| `01-s3-bucket-folders.png` | S3 bucket with `reports/` and `private/` prefixes |
-| `02-iam-policy-json.png` | Custom IAM policy JSON |
-| `03-iam-group-policy.png` | IAM group with policy attached |
-| `04-iam-user-group.png` | IAM user added to group |
-| `05-reports-access-success.png` | Successful access to `reports/readme.txt` |
-| `06-private-access-denied.png` | Access denied to `private/secrets.txt` |
-| `07-upload-access-denied.png` | Upload denied |
-| `08-delete-access-denied.png` | Delete denied |
-| `09-ec2-role-trust-policy.png` | EC2 IAM role trust relationship |
-| `10-bucket-policy-secure-transport.png` | S3 bucket policy enforcing HTTPS |
+![S3 Bucket Folders](screenshots/01-s3-bucket-folders.png)
 
----
+### IAM Policy JSON
 
-## Cleanup
+![IAM Policy JSON](screenshots/02-iam-policy-json.png)
 
-To avoid leaving unused resources, the following resources should be deleted after testing:
+### IAM Group Policy
 
-- IAM user
-- IAM group
-- IAM role
-- Custom IAM policy
-- S3 objects
-- S3 bucket
+![IAM Group Policy](screenshots/03-iam-group-policy.png)
 
----
+### IAM User Group Membership
 
-## What This Lab Demonstrates
+![IAM User Group Membership](screenshots/04-iam-user-group.png)
 
-This lab demonstrates practical knowledge of:
+### Reports Access Success
 
-- IAM users, groups, policies, and roles
-- Least privilege access design
-- S3 bucket permissions
-- Identity-based policies
-- Resource-based policies
-- Explicit deny and implicit deny
-- Secure access to AWS services using IAM roles
-- Avoiding long-term access keys on EC2 instances
+![Reports Access Success](screenshots/05-reports-access-success.png)
+
+### Private Access Denied
+
+![Private Access Denied](screenshots/06-private-access-denied.png)
+
+### Upload Access Denied
+
+![Upload Access Denied](screenshots/07-upload-access-denied.png)
+
+### Delete Access Denied
+
+![Delete Access Denied](screenshots/08-delete-access-denied.png)
+
+### EC2 Role Trust Policy
+
+![EC2 Role Trust Policy](screenshots/09-ec2-role-trust-policy.png)
+
+### S3 Bucket Policy
+
+![S3 Bucket Policy](screenshots/10-bucket-policy-secure-transport.png)
+
+## What I Learned
+
+- How to create a private S3 bucket.
+- How to use IAM users, groups, and policies.
+- How to apply least-privilege access to S3.
+- The difference between `s3:ListBucket`, `s3:GetObject`, `s3:PutObject`, and `s3:DeleteObject`.
+- How implicit deny works in AWS IAM.
+- How explicit deny overrides allow.
+- The difference between identity-based policies and resource-based policies.
+- How IAM roles allow EC2 to access AWS services without long-term access keys.
+- How a trust policy controls who can assume an IAM role.
+- How to enforce HTTPS access to an S3 bucket using a bucket policy.
+
