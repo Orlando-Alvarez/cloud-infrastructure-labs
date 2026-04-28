@@ -1,4 +1,4 @@
-# Lab 05 - AWS IAM Least Privilege Access to S3
+# Lab 02 - AWS IAM Least Privilege Access to S3
 
 ## Overview
 
