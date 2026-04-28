@@ -9,7 +9,7 @@ The goal of this repository is to document practical cloud labs in a clear and p
 | Lab | Topic | Cloud Provider | Status |
 |---|---|---|---|
 | [Lab 01](lab-01-azure-vm-nginx/) | Linux VM with NGINX Web Server | Azure | Completed |
-| [Lab 05](lab-02-aws-iam-s3-least-privilege/) | IAM Least Privilege Access to S3 | AWS | Completed |
+| [Lab 02](lab-02-aws-iam-s3-least-privilege/) | IAM Least Privilege Access to S3 | AWS | Completed |
 
 ## Skills Practiced
 
