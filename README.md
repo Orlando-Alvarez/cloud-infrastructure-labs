@@ -1,79 +1,269 @@
-# Cloud Infrastructure Labs
+# Cloud Engineering Portfolio
 
-This repository contains hands-on cloud infrastructure labs focused on Azure, AWS, Linux, networking, security, web servers, and DevOps fundamentals.
+This repository contains hands-on cloud engineering labs focused on **AWS**, **Azure**, Linux, security, serverless architecture, and cloud operations.
 
-The goal of this repository is to document practical cloud labs in a clear and professional way, showing the architecture, steps performed, IAM policies, troubleshooting notes, screenshots, and lessons learned.
+The goal of this portfolio is to demonstrate practical cloud skills through real deployments, documented configurations, screenshots, cleanup steps, and lessons learned.
+
+---
+
+## About This Portfolio
+
+This portfolio is being built as part of my preparation for cloud engineering, cloud development, and DevOps-focused roles.
+
+The labs are designed to show practical experience with:
+
+- Cloud infrastructure
+- Identity and access management
+- Secure data handling
+- Serverless APIs
+- Linux administration
+- Networking basics
+- Monitoring and logs
+- Cost-aware resource cleanup
+- Portfolio-quality technical documentation
+
+---
 
 ## Labs
 
 | Lab | Topic | Cloud Provider | Status |
 |---|---|---|---|
-| [Lab 01](lab-01-azure-vm-nginx/) | Linux VM with NGINX Web Server | Azure | Completed |
-| [Lab 02](lab-02-aws-iam-s3-least-privilege/) | IAM Least Privilege Access to S3 | AWS | Completed |
-| [Lab 03](lab-03-kms-secrets-manager/) | KMS, Secrets Manager, and Secure Data Controls | AWS | Completed |
+| [Lab 01](./labs/lab-01-linux-vm-nginx-web-server) | Linux VM with NGINX Web Server | Azure | Completed |
+| [Lab 02](./labs/lab-02-iam-least-privilege-s3) | IAM Least Privilege Access to S3 | AWS | Completed |
+| [Lab 03](./labs/lab-03-kms-secrets-manager-secure-data-controls) | KMS, Secrets Manager, and Secure Data Controls | AWS | Completed |
+| [Lab 04](./labs/lab-04-serverless-device-api) | Serverless REST API with Lambda, API Gateway, and DynamoDB | AWS | Completed |
+
+> If your local folder names are different, update the links in the table to match your actual repository structure.
+
+---
+
+## Lab Summaries
+
+### Lab 01 — Linux VM with NGINX Web Server
+
+**Cloud Provider:** Azure  
+**Main Focus:** Linux, virtual machines, web servers, networking, inbound rules
+
+In this lab, I deployed a Linux virtual machine, installed and configured NGINX, opened the required inbound network ports, and verified access to the web server from a browser and terminal.
+
+**Skills practiced:**
+
+- Linux VM deployment
+- NGINX installation
+- Network security rules
+- Public IP access
+- HTTP traffic validation
+- Basic cloud troubleshooting
+
+---
+
+### Lab 02 — IAM Least Privilege Access to S3
+
+**Cloud Provider:** AWS  
+**Main Focus:** IAM, S3, access control, least privilege
+
+In this lab, I practiced controlling access to Amazon S3 using IAM users, groups, policies, and least-privilege permissions.
+
+**Skills practiced:**
+
+- IAM users and groups
+- AWS managed vs custom policies
+- S3 bucket access
+- Least-privilege access design
+- Permission testing
+- AWS CLI usage
+
+---
+
+### Lab 03 — KMS, Secrets Manager, and Secure Data Controls
+
+**Cloud Provider:** AWS  
+**Main Focus:** Encryption, secrets management, secure data handling
+
+In this lab, I explored AWS security services used to protect sensitive data, including AWS KMS and AWS Secrets Manager.
+
+**Skills practiced:**
+
+- AWS KMS key concepts
+- Encryption at rest
+- Encryption in transit concepts
+- Secrets Manager
+- Secret rotation concepts
+- Secure configuration practices
+- IAM access to encrypted resources
+
+---
+
+### Lab 04 — Serverless Device API
+
+**Cloud Provider:** AWS  
+**Main Focus:** Serverless development, REST APIs, Lambda, DynamoDB, CloudWatch
+
+In this lab, I built a serverless REST API using API Gateway, AWS Lambda, DynamoDB, IAM, and CloudWatch Logs. The API can create, list, retrieve, and delete demo device records.
+
+**Architecture:**
+
+```text
+Client / PowerShell / curl
+        |
+        v
+Amazon API Gateway HTTP API
+        |
+        v
+AWS Lambda Python Function
+        |
+        v
+Amazon DynamoDB
+        |
+        v
+Amazon CloudWatch Logs
+```
+
+**Skills practiced:**
+
+- API Gateway HTTP API routes
+- AWS Lambda with Python
+- DynamoDB table design
+- IAM execution role permissions
+- Environment variables
+- CloudWatch Logs troubleshooting
+- REST API testing with PowerShell
+- Serverless cost awareness
+
+---
 
 ## Skills Practiced
 
-- Linux server administration
-- SSH access with private keys
-- Public and private IP addressing
-- Network Security Groups and firewall rules
-- Web server deployment with NGINX
-- Amazon S3 bucket configuration
-- IAM users, groups, roles, and policies
-- Least-privilege access design
-- S3 bucket policies
-- Server-side encryption
-- AWS KMS customer managed keys
-- SSE-KMS encrypted S3 objects
+### Cloud Platforms
+
+- AWS
+- Azure
+
+### Compute
+
+- Azure Virtual Machines
+- AWS Lambda
+
+### Storage and Databases
+
+- Amazon S3
+- Amazon DynamoDB
+
+### Security
+
+- AWS IAM
+- Least privilege permissions
+- AWS KMS
 - AWS Secrets Manager
-- Secure handling of fake credentials
-- AccessDenied troubleshooting
-- Basic cloud security documentation
-- Mapping Azure services to AWS equivalents
+- Resource policies
+- Environment variables
+- Secure data handling concepts
 
-## Repository Structure
+### Networking
 
-```text
-cloud-infrastructure-labs/
-├── README.md
-├── .gitignore
-├── lab-01-azure-vm-nginx/
-│   ├── README.md
-│   ├── index.html
-│   └── screenshots/
-│       ├── azure-vm-overview.png
-│       ├── nsg-rules.png
-│       ├── nginx-status.png
-│       ├── curl-localhost.png
-│       └── browser-test.png
-├── lab-02-aws-iam-s3-least-privilege/
-│   ├── README.md
-│   └── screenshots/
-└── lab-03-kms-secrets-manager/
-    ├── README.md
-    ├── screenshots/
-    │   ├── 01-kms-key-created.png
-    │   ├── 02-s3-object-sse-kms.png
-    │   ├── 03-s3-access-denied-kms-decrypt.png
-    │   ├── 04-s3-access-success-after-kms-decrypt.png
-    │   ├── 05-secrets-manager-access-denied.png
-    │   └── 06-secret-value-access-success.png
-    └── iam-policies/
-        ├── s3-read-without-kms.json
-        ├── kms-decrypt.json
-        ├── secrets-metadata-only.json
-        └── secrets-read-value.json
-```
+- HTTP access
+- Inbound rules
+- Public IP access
+- API Gateway endpoints
+- Basic cloud connectivity testing
 
-## Purpose
+### Monitoring and Troubleshooting
 
-These labs are part of my cloud engineering learning path and are designed to build practical experience with real cloud infrastructure scenarios.
+- CloudWatch Logs
+- Terminal-based testing
+- PowerShell HTTP requests
+- Endpoint validation
+- Error diagnosis
 
-Each lab focuses on understanding how cloud services work in practice, how permissions affect access, how to troubleshoot common issues, and how to document technical work clearly for a professional portfolio.
+### Development and Operations
+
+- Python
+- REST API concepts
+- JSON
+- PowerShell
+- Linux CLI
+- GitHub documentation
+- Resource cleanup and cost control
+
+---
+
+## Security Practices Followed
+
+Across these labs, I focused on basic but important cloud security practices:
+
+- Avoiding hardcoded credentials
+- Using IAM roles and policies
+- Applying least-privilege permissions
+- Avoiding real personal, patient, or sensitive data
+- Using environment variables for configuration
+- Documenting cleanup steps
+- Reviewing what information appears in screenshots before publishing
+
+---
+
+## Cost Awareness
+
+These labs are designed to be small and cost-aware. Resources should be deleted after testing unless they are intentionally kept for demonstration.
+
+Typical cleanup includes:
+
+- Deleting test APIs
+- Deleting Lambda functions
+- Deleting unused DynamoDB tables
+- Removing unnecessary IAM roles or policies
+- Deleting CloudWatch log groups when no longer needed
+- Stopping or deleting cloud virtual machines
+- Removing unused public IPs or related networking resources
+
+---
+
+## Portfolio Purpose
+
+This repository demonstrates hands-on learning and practical cloud implementation.
+
+It is intended to support applications for roles such as:
+
+- Cloud Engineer
+- Associate Cloud Engineer
+- Cloud Developer
+- Junior DevOps Engineer
+- Infrastructure / Platform Engineering Intern or Entry-Level Role
+- Software Engineer with cloud-focused responsibilities
+
+---
+
+## Current Status
+
+The portfolio is actively being expanded.
+
+Completed labs currently cover:
+
+- Linux VM deployment
+- NGINX web server setup
+- AWS IAM and S3 permissions
+- AWS encryption and secrets management
+- Serverless API development with Lambda, API Gateway, and DynamoDB
+
+Planned future areas include:
+
+- Application Load Balancer
+- Auto Scaling Groups
+- VPC public and private subnets
+- RDS in private subnets
+- NAT Gateway
+- VPC endpoints
+- Route 53
+- HTTPS with ACM
+- Docker deployments
+- Terraform infrastructure as code
+- CI/CD with GitHub Actions
+- CloudWatch alarms and SNS notifications
+- Disaster recovery architecture
+
+---
 
 ## Notes
 
-All sensitive information such as account IDs, ARNs, request IDs, host IDs, and credentials is redacted from screenshots and code examples.
+All labs are for educational and portfolio purposes.
 
-Any credentials shown in the labs are fake and used only for demonstration purposes.
+No production workloads, real customer data, medical data, personal data, or sensitive credentials are used.
