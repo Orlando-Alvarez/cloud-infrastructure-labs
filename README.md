@@ -28,10 +28,10 @@ The labs are designed to show practical experience with:
 
 | Lab | Topic | Cloud Provider | Status |
 |---|---|---|---|
-| [Lab 01](lab-01-linux-vm-nginx-web-server/) | Linux VM with NGINX Web Server | Azure | Completed |
-| [Lab 02](labs/lab-02-iam-least-privilege-s3/) | IAM Least Privilege Access to S3 | AWS | Completed |
-| [Lab 03](labs/lab-03-kms-secrets-manager-secure-data-controls/) | KMS, Secrets Manager, and Secure Data Controls | AWS | Completed |
-| [Lab 04](labs/lab-04-serverless-device-api/) | Serverless REST API with Lambda, API Gateway, and DynamoDB | AWS | Completed |
+| [Lab 01](lab-01-azure-vm-nginx/) | Linux VM with NGINX Web Server | Azure | Completed |
+| [Lab 02](lab-02-aws-iam-s3-least-privilege/) | IAM Least Privilege Access to S3 | AWS | Completed |
+| [Lab 03](lab-03-kms-secrets-manager/) | KMS, Secrets Manager, and Secure Data Controls | AWS | Completed |
+| [Lab 04](lab-04-serverless-device-api/) | Serverless REST API with Lambda, API Gateway, and DynamoDB | AWS | Completed |
 
 > If your local folder names are different, update the links in the table to match your actual repository structure.
 
